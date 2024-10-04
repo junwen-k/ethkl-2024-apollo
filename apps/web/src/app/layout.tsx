@@ -1,12 +1,13 @@
 import './globals.css'
+
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { headers } from 'next/headers'
 import * as React from 'react'
 import { cookieToInitialState } from 'wagmi'
 
-import { getConfig } from '../wagmi'
-import { Providers } from './providers'
+import { RainbowWagmiProvider } from '@/components/rainbow-wagmi-provider'
+import { getConfig } from '@/wagmi'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers initialState={initialState}>{children}</Providers>
+        <RainbowWagmiProvider initialState={initialState}>{children}</RainbowWagmiProvider>
       </body>
     </html>
   )

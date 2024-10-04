@@ -1,5 +1,6 @@
 'use client'
 
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import {
   ChevronLeft,
   ChevronRight,
@@ -117,8 +118,8 @@ export function Dashboard() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <div className="relative ml-auto flex-1 md:grow-0">
-            <Button>Connect Wallet</Button>
+          <div className="ml-auto">
+            <ConnectButton />
           </div>
         </header>
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
