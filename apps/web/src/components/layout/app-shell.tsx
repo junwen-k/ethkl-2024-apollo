@@ -4,14 +4,6 @@ import Link from 'next/link'
 import * as React from 'react'
 
 import { Sidebar } from '@/components/layout/sidebar'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 
@@ -50,25 +42,6 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => (
             </nav>
           </SheetContent>
         </Sheet>
-        <Breadcrumb className="hidden md:flex">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="#">Dashboard</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="#">Orders</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
         <div className="ml-auto">
           <ConnectButton />
         </div>
