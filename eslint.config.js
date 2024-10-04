@@ -46,6 +46,12 @@ export default ts.config(
       ],
       'import/namespace': 'off',
       'import/no-named-as-default-member': 'off',
+      'sort-imports': [
+        'error',
+        {
+          ignoreDeclarationSort: true,
+        },
+      ],
     },
     settings: {
       'import/resolver': {
