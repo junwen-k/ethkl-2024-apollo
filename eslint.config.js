@@ -76,7 +76,6 @@ export default ts.config(
       },
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^\\$\\$' }],
       'tailwindcss/classnames-order': 'off',
       'import/default': 'off',
       'import/no-named-as-default': 'off',
