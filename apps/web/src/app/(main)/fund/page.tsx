@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/table'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import neighbourhoodTransactions from '@/lib/data/neighbourhood.json'
+import { cn } from '@/lib/utils'
 
 const transactionTypes = {
   service_maintainence: 'Service & Maintainence Fees',
@@ -143,7 +144,7 @@ export function Fund() {
                     <TableRow>
                       <TableHead className="hidden md:table-cell">Date</TableHead>
                       <TableHead className="text-center">Unit No.</TableHead>
-                      <TableHead className="hidden sm:table-cell">Type</TableHead>
+                      <TableHead className="hidden sm:table-cell">Remark</TableHead>
                       <TableHead className="text-right">Amount</TableHead>
                       <TableHead className="text-right">Transaction Fees</TableHead>
                     </TableRow>
@@ -167,7 +168,16 @@ export function Fund() {
                             <TableCell className="hidden sm:table-cell">
                               {transactionTypes[neighbour.type as keyof typeof transactionTypes]}
                             </TableCell>
-                            <TableCell className="text-right">{neighbour.amount} ETH</TableCell>
+                            <TableCell
+                              className={cn(
+                                'text-right',
+                                neighbour.type === 'service_maintainence'
+                                  ? 'text-success'
+                                  : 'text-destructive'
+                              )}
+                            >
+                              {neighbour.amount} ETH
+                            </TableCell>
                             <TableCell className="text-right">{neighbour.trxnFees} ETH</TableCell>
                           </TableRow>
                         </TooltipProvider>

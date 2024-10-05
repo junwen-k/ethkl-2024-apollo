@@ -8,7 +8,7 @@
     "trxnFees": "0.0533",
     "trxnHash": "0x51e887b119798c872c166a2ef740cd8e55fa113c87fc6ea1f23a04465eea951f",
     "remark": "Garden maintenance",
-    "unitNo": ""
+    "unitNo": "80"
   },
   {
     "walletAddress": "0xae3f8a5cfca70f894bf8cd7bdbd6f228faab7c36aa625a98ff39ce28b9f56bc8",
@@ -39,7 +39,7 @@
     "trxnFees": "0.0438",
     "trxnHash": "0x40a6c32c2bbfcc688221e65156cf7e3f16fb2344966052de062c0f24bff353ac",
     "remark": "Shrubs cutting",
-    "unitNo": ""
+    "unitNo": "22"
   },
   {
     "walletAddress": "0x90c379f8646917fd39a10e0b4b21a1088481bbf753f6f99e735a3f18ef09f724",

@@ -9,59 +9,27 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-// TODO: use react table
-
 export const UnitTransactions = () => {
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Month</TableHead>
+          <TableHead>Remark</TableHead>
           <TableHead className="text-right">Amount</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableCell>
-            <div className="font-medium">Liam Johnson</div>
-            <div className="text-muted-foreground text-sm">liam@example.com</div>
-          </TableCell>
-          <TableCell className="text-right">0.5E</TableCell>
+          <TableCell>Garden Maintenance</TableCell>
+          <TableCell className="text-destructive text-right">-2.23051 ETH</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell>
-            <div className="font-medium">Liam Johnson</div>
-            <div className="text-muted-foreground text-sm">liam@example.com</div>
-          </TableCell>
-          <TableCell className="text-right">0.5E</TableCell>
+          <TableCell>Security & Maintenance Fees</TableCell>
+          <TableCell className="text-destructive text-right">-1.01 ETH</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell>
-            <div className="font-medium">Liam Johnson</div>
-            <div className="text-muted-foreground text-sm">liam@example.com</div>
-          </TableCell>
-          <TableCell className="text-right">0.5E</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            <div className="font-medium">Liam Johnson</div>
-            <div className="text-muted-foreground text-sm">liam@example.com</div>
-          </TableCell>
-          <TableCell className="text-right">0.5E</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            <div className="font-medium">Liam Johnson</div>
-            <div className="text-muted-foreground text-sm">liam@example.com</div>
-          </TableCell>
-          <TableCell className="text-right">0.5E</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            <div className="font-medium">Liam Johnson</div>
-            <div className="text-muted-foreground text-sm">liam@example.com</div>
-          </TableCell>
-          <TableCell className="text-right">0.5E</TableCell>
+          <TableCell>Shrubs cutting</TableCell>
+          <TableCell className="text-destructive text-right">-0.12 ETH</TableCell>
         </TableRow>
       </TableBody>
     </Table>

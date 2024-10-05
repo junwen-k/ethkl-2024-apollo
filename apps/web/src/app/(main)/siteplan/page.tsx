@@ -56,9 +56,7 @@ export function Siteplan() {
                 <SheetContent className="flex flex-col">
                   <SheetHeader>
                     <SheetTitle>Unit 22</SheetTitle>
-                    <SheetDescription>
-                      This action cannot be undone. This will permanently delete your account and
-                    </SheetDescription>
+                    <SheetDescription>Transaction history for this unit.</SheetDescription>
                   </SheetHeader>
                   <div className="flex-1">
                     <UnitTransactions />
