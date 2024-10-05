@@ -45,3 +45,7 @@ Residents can preview each unit's transaction history, offering insights into pa
 1.  Start development server.
 
         pnpm dev
+
+## Disclaimer
+
+The source codes and assets used in this project are intended solely for hackathon purposes and are not meant for production use.
