@@ -12,11 +12,24 @@ contract NeighborhoodCommunityFund is Ownable, ReentrancyGuard {
     }
 
     mapping(uint256 => Unit) public units; // Mapping unit number to unit data
+    mapping(address => bool) public whitelistedCommittees; // Mapping for whitelisted committees
 
     event UnitOwnerSet(uint256 unitNumber, address owner);
+    event CommitteeWhitelisted(address committee);
+    event CommitteeRemoved(address committee);
 
-    constructor() Ownable(msg.sender) {
-        // Pass the deployer (msg.sender) as the initial owner
+    constructor() Ownable(msg.sender) {}
+
+    // Function to whitelist a committee
+    function whitelistCommittee(address committee) external onlyOwner {
+        whitelistedCommittees[committee] = true;
+        emit CommitteeWhitelisted(committee);
+    }
+
+    // Function to remove a committee from the whitelist
+    function removeCommittee(address committee) external onlyOwner {
+        whitelistedCommittees[committee] = false;
+        emit CommitteeRemoved(committee);
     }
 
     function setUnitOwner(uint256 unitNumber, address owner) external onlyOwner {
