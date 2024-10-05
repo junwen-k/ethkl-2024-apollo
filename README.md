@@ -1,4 +1,4 @@
-# Ethereum Kuala Lumpur 2024 - Apollo
+# Ethereum Kuala Lumpur 2024 - Apollo NeighborPay
 
 ## Problem Statement
 
