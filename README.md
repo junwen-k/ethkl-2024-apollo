@@ -1,3 +1,5 @@
+![NeighborPay](./docs/cover-image.png 'NeighborPay')
+
 # Ethereum Kuala Lumpur 2024 - Apollo NeighborPay
 
 ## Problem Statement
