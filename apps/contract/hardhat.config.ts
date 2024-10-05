@@ -11,6 +11,13 @@ const config: HardhatUserConfig = {
       },
     },
   },
+  networks: {
+    scrollSepolia: {
+      url: 'https://scroll-testnet-public.unifra.io',
+      // eslint-disable-next-line turbo/no-undeclared-env-vars
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+  },
 }
 
 export default config

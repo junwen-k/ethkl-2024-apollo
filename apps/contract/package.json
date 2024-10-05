@@ -1,11 +1,13 @@
 {
   "name": "contract",
   "scripts": {
-    "compile": "hardhat compile",
-    "test": "hardhat test",
-    "coverage": "hardhat coverage"
+    "hardhat:compile": "dotenvx run -- hardhat compile",
+    "hardhat:test": "dotenvx run -- hardhat test",
+    "hardhat:coverage": "dotenvx run -- hardhat coverage",
+    "hardhat:deploy": "dotenvx run -- hardhat ignition deploy"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "^1.14.2",
     "@nomicfoundation/hardhat-ignition": "^0.15.0",
     "@nomicfoundation/hardhat-ignition-viem": "^0.15.0",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
