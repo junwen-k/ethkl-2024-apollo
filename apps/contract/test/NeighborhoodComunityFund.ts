@@ -133,4 +133,71 @@ describe('NeighborhoodCommunityFund Contract', function () {
     const hasPaidStatus = await communityFund.read.hasPaid([BigInt(0), ownerWallet.account.address])
     assert.isTrue(hasPaidStatus, 'The owner should be marked as having paid')
   })
+
+  it('should allow a whitelisted committee to withdraw funds', async function () {
+    const { communityFund } = await loadFixture(deployNeighborhoodCommunityFund)
+    const [ownerWallet, committeeWallet] = await hre.viem.getWalletClients()
+
+    // Set up the unit owner
+    const unitNumber = BigInt(1)
+    await communityFund.write.setUnitOwner([unitNumber, ownerWallet.account.address])
+
+    // Whitelist the committee
+    await communityFund.write.whitelistCommittee([committeeWallet.account.address])
+
+    // Request a payment
+    const requestAmount = parseEther('0.1') // 0.1 ETH
+    const requestRemark = 'Monthly security maintenance fee'
+    const requestDeadline = BigInt(Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60) // 1 week from now
+
+    await committeeWallet.writeContract({
+      address: communityFund.address,
+      abi: communityFund.abi,
+      functionName: 'requestPayment',
+      args: [requestAmount, requestRemark, requestDeadline],
+    })
+
+    // Unit owner makes a payment
+    await ownerWallet.writeContract({
+      address: communityFund.address,
+      abi: communityFund.abi,
+      functionName: 'payCommunityFund',
+      args: [BigInt(0)], // Assuming this is the ID of the payment request
+      value: requestAmount, // The amount to pay
+    })
+
+    // Verify the payment was made
+    const [, totalPaid, lastPaidDate] = await communityFund.read.units([unitNumber]) // Retrieve the unit details
+
+    // Check if the total paid is updated correctly
+    assert.equal(
+      totalPaid.toString(),
+      requestAmount.toString(),
+      'Total paid should match the payment amount'
+    )
+    assert.isTrue(lastPaidDate > 0, 'Last paid date should be updated')
+
+    // Check if the payment status is updated
+    const hasPaidStatus = await communityFund.read.hasPaid([BigInt(0), ownerWallet.account.address])
+    assert.isTrue(hasPaidStatus, 'The owner should be marked as having paid')
+
+    await committeeWallet.writeContract({
+      address: communityFund.address,
+      abi: communityFund.abi,
+      functionName: 'withdrawFunds',
+      args: [requestAmount, 'Withdrawal for security maintenance payment'],
+    })
+
+    const publicClient = await hre.viem.getPublicClient()
+
+    const balance = await publicClient.getBalance({
+      address: committeeWallet.account.address,
+    })
+
+    assert.equal(
+      balance.toString(),
+      balance.toString(),
+      'Total withdrawn should match the payment amount'
+    )
+  })
 })

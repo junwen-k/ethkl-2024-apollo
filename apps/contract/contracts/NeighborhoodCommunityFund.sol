@@ -34,6 +34,7 @@ contract NeighborhoodCommunityFund is Ownable, ReentrancyGuard {
         uint256 deadline
     );
     event PaymentMade(uint256 requestId, address owner, uint256 amount);
+    event FundsWithdrawn(address committee, uint256 amount, string remark); // New event for fund withdrawals
 
     constructor() Ownable(msg.sender) {}
 
@@ -93,10 +94,21 @@ contract NeighborhoodCommunityFund is Ownable, ReentrancyGuard {
         emit PaymentMade(requestId, msg.sender, msg.value);
     }
 
+    function withdrawFunds(uint256 amount, string memory remark) external nonReentrant {
+        require(
+            whitelistedCommittees[msg.sender],
+            'Only whitelisted committees can withdraw funds'
+        );
+        require(amount > 0, 'Withdrawal amount must be greater than 0');
+        require(address(this).balance >= amount, 'Insufficient contract balance');
+
+        payable(msg.sender).transfer(amount); // Transfer the amount to the committee
+        emit FundsWithdrawn(msg.sender, amount, remark); // Emit the event
+    }
+
     // Helper function to find the unit number by owner
     function findUnitNumberByOwner(address owner) internal view returns (uint256) {
         for (uint256 i = 1; i <= 100; i++) {
-            // Adjust the range as needed
             if (units[i].owner == owner) {
                 return i;
             }
@@ -113,5 +125,21 @@ contract NeighborhoodCommunityFund is Ownable, ReentrancyGuard {
     function hasPaid(uint256 requestId, address owner) external view returns (bool) {
         require(requestId < paymentRequests.length, 'Invalid request ID');
         return paymentRequests[requestId].paidStatus[owner];
+    }
+
+    // Disabling direct transfers of Ether to the contract
+    fallback() external payable {
+        revert('Direct transfers not allowed');
+    }
+
+    receive() external payable {
+        revert('Direct payments not allowed');
+    }
+
+    // Emergency function to recover stuck funds (owner only)
+    function recoverFunds() external onlyOwner {
+        uint256 balance = address(this).balance;
+        require(balance > 0, 'No funds to recover');
+        payable(owner()).transfer(balance);
     }
 }
