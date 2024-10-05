@@ -4,6 +4,7 @@ import * as React from 'react'
 import { FundSizeChart } from '@/components/fund-size-chart'
 import { Time } from '@/components/time'
 import { TotalAllocationChart } from '@/components/total-allocation-chart'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -29,6 +30,24 @@ const transactionTypes = {
   withdrawal: 'Withdrawal',
 }
 
+const paymentRequests = [
+  {
+    date: '2024-10-18T01:49:56',
+    amount: 2.23051,
+    remark: 'Garden Maintenance',
+  },
+  {
+    date: '2024-10-18T01:49:56',
+    amount: 1.01,
+    remark: 'Security & Maintenance Fees',
+  },
+  {
+    date: '2024-10-18T01:49:56',
+    amount: 0.12,
+    remark: 'Shrubs cutting',
+  },
+] as const
+
 export function Fund() {
   const totalPendingAmount = neighbourhoodTransactions
     .filter((d) => d.status === 'pending')
@@ -36,11 +55,9 @@ export function Fund() {
   const totalAllocatedAmount = neighbourhoodTransactions
     .filter((d) => d.status === 'fulfilled' && d.type === 'service_maintainence')
     .reduce((acc, curr) => acc + parseFloat(Number(curr.amount)), 0)
+
   const totalAllocation = totalAllocatedAmount + totalPendingAmount
   const percentageToTargetAllocatedAmount = (totalAllocatedAmount / totalAllocation) * 100
-
-  console.log('totalPendingAmount', totalPendingAmount)
-  console.log('totalAllocatedAmount', totalAllocatedAmount)
 
   return (
     <div className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
@@ -81,40 +98,34 @@ export function Fund() {
           <div>
             <Card x-chunk="dashboard-05-chunk-3">
               <CardHeader className="px-7">
-                <CardTitle>Pending Transactions</CardTitle>
-                <CardDescription>Pending transactions in neighbourhood.</CardDescription>
+                <CardTitle>Payment Requests</CardTitle>
+                <CardDescription>Your pending payment.</CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="hidden md:table-cell">Date</TableHead>
-                      <TableHead className="text-center">Unit No.</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Remark</TableHead>
                       <TableHead className="text-right">Amount</TableHead>
-                      <TableHead className="text-right">Transaction Fees</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {neighbourhoodTransactions
-                      .filter((d) => d.status === 'pending')
-                      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                      .map((neighbour) => (
-                        <TooltipProvider>
-                          <TableRow>
-                            <TableCell className="hidden md:table-cell">
-                              <Time>{neighbour.date}</Time>
-                            </TableCell>
-                            <TableCell className="text-center">
-                              <Tooltip>
-                                <TooltipTrigger>{neighbour.unitNo}</TooltipTrigger>
-                                <TooltipContent>{neighbour.walletAddress}</TooltipContent>
-                              </Tooltip>
-                            </TableCell>
-                            <TableCell className="text-right">{neighbour.amount} ETH</TableCell>
-                            <TableCell className="text-right">{neighbour.trxnFees} ETH</TableCell>
-                          </TableRow>
-                        </TooltipProvider>
-                      ))}
+                    {paymentRequests.map((request) => (
+                      <TooltipProvider>
+                        <TableRow>
+                          <TableCell>
+                            <Time>{request.date}</Time>
+                          </TableCell>
+                          <TableCell>{request.remark}</TableCell>
+                          <TableCell className="text-right">{`${request.amount} ETH`}</TableCell>
+                          <TableCell className="text-right">
+                            <Button>Pay</Button>
+                          </TableCell>
+                        </TableRow>
+                      </TooltipProvider>
+                    ))}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -123,8 +134,8 @@ export function Fund() {
           <div>
             <Card x-chunk="dashboard-05-chunk-3">
               <CardHeader className="px-7">
-                <CardTitle>Transactions History</CardTitle>
-                <CardDescription>Transactions history in neighbourhood.</CardDescription>
+                <CardTitle>Transaction History</CardTitle>
+                <CardDescription>Transaction history within this fund.</CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
