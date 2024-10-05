@@ -75,7 +75,7 @@ export function Fund() {
             </Card>
           </div>
           <FundSizeChart />
-          <TotalAllocationChart />
+          <TotalAllocationChart totalUnpaid={totalPendingAmount} totalPaid={totalAllocatedAmount} />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>

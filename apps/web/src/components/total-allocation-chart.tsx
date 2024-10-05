@@ -21,11 +21,6 @@ import {
 
 export const description = 'A donut chart with text'
 
-const chartData = [
-  { type: 'paid', amount: 0.55, fill: 'var(--color-safari)' },
-  { type: 'unpaid', amount: 0.2, fill: 'var(--color-chrome)' },
-]
-
 const chartConfig = {
   visitors: {
     label: 'Visitors',
@@ -52,10 +47,18 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export const TotalAllocationChart = () => {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.amount, 0)
-  }, [])
+interface TotalAllocationChartProps {
+  totalUnpaid: number
+  totalPaid: number
+}
+
+export const TotalAllocationChart = ({ totalUnpaid, totalPaid }: TotalAllocationChartProps) => {
+  const totalAllocation = totalUnpaid + totalPaid
+
+  const chartData = [
+    { type: 'Paid', amount: (totalPaid / totalAllocation) * 100, fill: 'var(--color-safari)' },
+    { type: 'Unpaid', amount: (totalUnpaid / totalAllocation) * 100, fill: 'var(--color-chrome)' },
+  ]
 
   return (
     <Card className="flex flex-col">
@@ -83,7 +86,7 @@ export const TotalAllocationChart = () => {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalAllocation.toFixed(2)}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
