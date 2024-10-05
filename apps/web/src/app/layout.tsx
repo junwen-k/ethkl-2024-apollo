@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Apollo',
-  description: 'Neighbourhood blockchain powered app.',
+  description: 'Neighborhood blockchain powered app.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
