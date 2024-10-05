@@ -15,7 +15,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { TooltipProvider } from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { UnitPath } from '@/components/unit-path'
 import { UnitTransactions } from '@/components/unit-transactions'
 
@@ -39,12 +39,20 @@ export function Siteplan() {
             >
               <rect opacity="0.5" width="1163.55" height="1265" fill="url(#pattern0_0_1)" />
               <Sheet>
-                <SheetTrigger asChild>
-                  <UnitPath
-                    status="paid"
-                    d="M631 441.5L556.5 505L560 508.5L556.5 512L577 536L654.5 469.5L631 441.5Z"
-                  />
-                </SheetTrigger>
+                <Tooltip>
+                  <SheetTrigger asChild>
+                    <TooltipTrigger asChild>
+                      <UnitPath
+                        status="paid"
+                        d="M631 441.5L556.5 505L560 508.5L556.5 512L577 536L654.5 469.5L631 441.5Z"
+                      />
+                    </TooltipTrigger>
+                  </SheetTrigger>
+                  <TooltipContent className="grid gap-0.5">
+                    <p className="font-semibold">Unit 21</p>
+                    <p className="text-xs">0x983110309620D911731Ac0932219af06091b6744</p>
+                  </TooltipContent>
+                </Tooltip>
                 <SheetContent className="flex flex-col">
                   <SheetHeader>
                     <SheetTitle>Unit 22</SheetTitle>

@@ -7,9 +7,9 @@ interface UnitPathProps extends React.ComponentPropsWithoutRef<'path'> {
 }
 
 export const UnitPath = React.forwardRef<React.ElementRef<'path'>, UnitPathProps>(
-  ({ className, status, ...props }) => (
+  ({ className, status, ...props }, ref) => (
     <path
-      type="button"
+      ref={ref}
       className={cn(
         status === 'unpaid' && 'fill-destructive/50 hover:fill-destructive/75',
         status === 'paid' && 'fill-success/50 hover:fill-success/75',
