@@ -69,13 +69,18 @@ contract NeighborhoodCommunityFund is Ownable, ReentrancyGuard {
 
         emit PaymentRequested(paymentRequests.length - 1, msg.sender, amount, remark, deadline);
     }
-    function payCommunityFund(uint256 requestId, uint256 unitNumber) external payable nonReentrant {
+
+    function payCommunityFund(uint256 requestId) external payable nonReentrant {
         require(msg.value > 0, 'Payment must be greater than 0');
         require(requestId < paymentRequests.length, 'Invalid request ID');
 
         PaymentRequest storage request = paymentRequests[requestId];
         require(msg.value == request.amount, 'Incorrect payment amount');
         require(!request.paidStatus[msg.sender], 'You have already paid');
+
+        // Get the unit number based on the owner
+        uint256 unitNumber = findUnitNumberByOwner(msg.sender);
+        require(unitNumber != 0, 'You are not the owner of any unit');
 
         Unit storage unit = units[unitNumber]; // Get the unit by unit number
         require(unit.owner == msg.sender, 'Only the unit owner can make payments');
@@ -86,6 +91,17 @@ contract NeighborhoodCommunityFund is Ownable, ReentrancyGuard {
         request.paidStatus[msg.sender] = true; // Mark as paid
 
         emit PaymentMade(requestId, msg.sender, msg.value);
+    }
+
+    // Helper function to find the unit number by owner
+    function findUnitNumberByOwner(address owner) internal view returns (uint256) {
+        for (uint256 i = 1; i <= 100; i++) {
+            // Adjust the range as needed
+            if (units[i].owner == owner) {
+                return i;
+            }
+        }
+        return 0; // Return 0 if no unit found
     }
 
     // Custom getter function to return the Unit struct

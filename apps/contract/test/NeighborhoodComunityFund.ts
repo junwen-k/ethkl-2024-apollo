@@ -114,7 +114,7 @@ describe('NeighborhoodCommunityFund Contract', function () {
       address: communityFund.address,
       abi: communityFund.abi,
       functionName: 'payCommunityFund',
-      args: [BigInt(0), unitNumber], // Assuming this is the ID of the payment request
+      args: [BigInt(0)], // Assuming this is the ID of the payment request
       value: requestAmount, // The amount to pay
     })
 
