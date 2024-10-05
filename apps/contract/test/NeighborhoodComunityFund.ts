@@ -60,36 +60,77 @@ describe('NeighborhoodCommunityFund Contract', function () {
     assert.isFalse(isWhitelisted, 'The committee should be removed')
   })
 
-  it('should allow the unit owner to make payments to the community fund', async function () {
+  it('should allow a committee to request a payment', async function () {
     const { communityFund } = await loadFixture(deployNeighborhoodCommunityFund)
-    const [wallet] = await hre.viem.getWalletClients() // Get the wallet for the test
+    const [, committeeWallet] = await hre.viem.getWalletClients()
+
+    // Whitelist the committee
+    await communityFund.write.whitelistCommittee([committeeWallet.account.address])
+
+    // Request a payment
+    const requestAmount = parseEther('0.1') // 0.1 ETH
+    const requestRemark = 'Monthly security maintenance fee'
+    const requestDeadline = BigInt(Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60) // 1 week from now
+
+    await committeeWallet.writeContract({
+      address: communityFund.address,
+      abi: communityFund.abi,
+      functionName: 'requestPayment',
+      args: [requestAmount, requestRemark, requestDeadline],
+    })
+
+    // Verify the payment request
+    const [, amount, remark, deadline] = await communityFund.read.paymentRequests([BigInt(0)]) // Get the first request
+    assert.equal(amount.toString(), requestAmount.toString(), 'The payment amount should match')
+    assert.equal(remark, requestRemark, 'The remark should match')
+    assert.equal(deadline.toString(), requestDeadline.toString(), 'The deadline should match')
+  })
+
+  it('should allow the unit owner to make payments to the community fund by depositing on payment collection request', async function () {
+    const { communityFund } = await loadFixture(deployNeighborhoodCommunityFund)
+    const [ownerWallet, committeeWallet] = await hre.viem.getWalletClients()
+
+    // Set up the unit owner
     const unitNumber = BigInt(1)
+    await communityFund.write.setUnitOwner([unitNumber, ownerWallet.account.address])
 
-    // Set the unit owner
-    await communityFund.write.setUnitOwner([unitNumber, wallet.account.address])
+    // Whitelist the committee
+    await communityFund.write.whitelistCommittee([committeeWallet.account.address])
 
-    // Simulate the unit owner making a payment of 1 ETH
-    const paymentAmount = parseEther('1') // 1 ETH
+    // Request a payment
+    const requestAmount = parseEther('0.1') // 0.1 ETH
+    const requestRemark = 'Monthly security maintenance fee'
+    const requestDeadline = BigInt(Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60) // 1 week from now
 
-    // Make the payment
-    await wallet.writeContract({
+    await committeeWallet.writeContract({
+      address: communityFund.address,
+      abi: communityFund.abi,
+      functionName: 'requestPayment',
+      args: [requestAmount, requestRemark, requestDeadline],
+    })
+
+    // Unit owner makes a payment
+    await ownerWallet.writeContract({
       address: communityFund.address,
       abi: communityFund.abi,
       functionName: 'payCommunityFund',
-      args: [unitNumber],
-      account: wallet.account,
-      value: paymentAmount, // Include the payment amount
+      args: [BigInt(0), unitNumber], // Assuming this is the ID of the payment request
+      value: requestAmount, // The amount to pay
     })
 
-    // Retrieve the updated totalPaid and lastPaidDate from the contract
-    const [, totalPaid, lastPaidDate] = await communityFund.read.units([unitNumber])
+    // Verify the payment was made
+    const [, totalPaid, lastPaidDate] = await communityFund.read.units([unitNumber]) // Retrieve the unit details
 
-    // Assertions to check if the payment was recorded correctly
+    // Check if the total paid is updated correctly
     assert.equal(
       totalPaid.toString(),
-      paymentAmount.toString(),
+      requestAmount.toString(),
       'Total paid should match the payment amount'
     )
-    assert(lastPaidDate > 0, 'Last paid date should be updated')
+    assert.isTrue(lastPaidDate > 0, 'Last paid date should be updated')
+
+    // Check if the payment status is updated
+    const hasPaidStatus = await communityFund.read.hasPaid([BigInt(0), ownerWallet.account.address])
+    assert.isTrue(hasPaidStatus, 'The owner should be marked as having paid')
   })
 })
