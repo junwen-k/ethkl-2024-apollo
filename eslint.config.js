@@ -77,7 +77,6 @@ export default ts.config(
     },
     rules: {
       'tailwindcss/classnames-order': 'off',
-      'tailwindcss/no-custom-classname': 'off',
       'import/default': 'off',
       'import/no-named-as-default': 'off',
     },
