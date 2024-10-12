@@ -4,7 +4,8 @@
     "hardhat:compile": "dotenvx run -- hardhat compile",
     "hardhat:test": "dotenvx run -- hardhat test",
     "hardhat:coverage": "dotenvx run -- hardhat coverage",
-    "hardhat:deploy": "dotenvx run -- hardhat ignition deploy"
+    "hardhat:deploy": "dotenvx run -- hardhat ignition deploy",
+    "hardhat:verify": "dotenvx run -- hardhat ignition verify"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.14.2",
